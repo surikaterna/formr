@@ -1,7 +1,7 @@
-//const isLetter = c => c.toLowerCase() !== c.toUpperCase();   
+//const isLetter = c => c.toLowerCase() !== c.toUpperCase();
 
 /**
- * Not time to implement a expression parser/interpretator... 
+ * Not time to implement a expression parser/interpretator...
  */
 export default class Evaluator {
   constructor() {
@@ -9,14 +9,19 @@ export default class Evaluator {
   }
 
   eval(expression, context) {
+    // look away
     let expr = expression.toString();
-    if (!expr.startsWith('this.')) {
+    console.log('>>', expr);
+    if (!expr.startsWith('this.') && expr[0] !== '{') {
       expr = 'this.' + expr;
+    } else if (expr[0] === '{') {
+      expr = `(${expr})`
     }
 
     return function () {
-      // look away
-      return eval(expr);
+      const res = eval(expr);
+      console.log('EVAL', expr, res, this);
+      return res;
     }.call(context);
   }
 }
