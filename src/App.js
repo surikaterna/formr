@@ -44,11 +44,12 @@ Json:
   }}
   */
 const jsx = `
-<Ui>
-  <ModelField value={name} schema={{ type:"string", "title":"Name"}}/>
-  <ModelField value={name} schema={{ type:"string", "title":"Name"}}/>
-  <ModelField value={age} schema={{ type:"number", "title":"Name"}}/>
-</Ui>
+  <Ui>
+    <ModelField value={name} schema={{ type:"string", "title":"Name"}}/>
+    <ModelField value={name} schema={{ type:"string", "title":"Name"}}/>
+    <ModelField value={age} schema={{ type:"number", "title":"Name"}}/>
+    <ModelField value={age} schema={{ type:"number", "title":"Name"}}/>
+  </Ui>
 `
 
 const uiDef = parser.parse(jsx).props.children;
