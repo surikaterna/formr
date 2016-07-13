@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Expression, {Evaluator} from './expression';
+import ElementBuilder from './core/element-builder';
 
 const wrapChildren = (children, props) =>
   React.Children.map(children, (child) => React.cloneElement(child, props));
@@ -20,26 +21,34 @@ class PropertyExpander {
     return result;
   }
 }
+/*
+  <Component id='Asdasd'>
+  </Component>
+  <Asdasd>
+  </Asdasd>
+*/
 
 export default class DeclaredUi extends Component {
   constructor(props) {
     super(props);
+
   }
   render() {
-    console.log(this.props);
-    const {ui, componentFactory, onChange, ...other} = this.props;
-    var i =0;
-    const result = this.props.ui.map(c => {
-      // go for expressions
-      let componentProps = PropertyExpander.expand(c.props, other['value'], new Evaluator());
-      //const componentProps = PropertyExpander.expand(Object.assign({}, other, c.props), new Evaluator());
-      componentProps = Object.assign({}, other, componentProps);
-      const Field = componentFactory(c.type);
-      //const Field = BoundField(component);
-      //const Field = props => <b>Test</b>;
-      return <Field key={i++} onChange={e=>console.log(e)} {...componentProps } componentFactory={componentFactory}/>;
-    });
-
+    const {ui, componentFactory, onChange, schema, ...other} = this.props;
+    const builder = new ElementBuilder(componentFactory);
+    //    var i =0;
+    /*    const result = this.props.ui.map(c => {
+          // go for expressions
+          let componentProps = PropertyExpander.expand(c.props, other['value'], new Evaluator());
+          //const componentProps = PropertyExpander.expand(Object.assign({}, other, c.props), new Evaluator());
+          componentProps = Object.assign({}, other, componentProps);
+          const Field = componentFactory(c.type);
+          //const Field = BoundField(component);
+          //const Field = props => <b>Test</b>;
+          return <Field key={i++} onChange={e=>console.log(e)} {...componentProps } componentFactory={componentFactory}/>;
+        });
+    */
+    const result = builder.build(ui, { componentFactory, schema, onChange });
     return <div className="ui">{ result }</div>
   }
 }

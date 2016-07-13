@@ -1,26 +1,31 @@
-const rMatch = (re, process) => {
+const rMatch = (re, process) => { // eslint-disable-line arrow-body-style
   return {
     match: (stream) => re.test(stream),
     process
-  }
-}
+  };
+};
 
-const rExtract = (re) => (token, stream) => {
+const rExtract = (re, len) => (token, stream) => {
   const match = stream.match(re);
-  token.text = match[1];
-  token.length = match[0].length;
+  const result = token;
+  result.text = match[1];
+  result.length = match[0].length;
+  if (len) {
+    result.length += len;
+  }
 
   // hack for string match
-  if(!token.text) {
-    token.text = match[0].substring(1, match[0].length-1);
+  if (!token.text) {
+    result.text = match[0].substring(1, match[0].length - 1);
   }
-}
+};
 
-const rToken = re => rMatch(re, rExtract(re));
+const rToken = (re, len) => rMatch(re, rExtract(re, len));
 const feeder = (startChar, endChar) => (token, stream) => {
   let pos = 0;
   let end;
   let count = 0;
+  const result = token;
   while (!end) {
     switch (stream[pos++]) {
       case startChar: count++; break;
@@ -29,24 +34,27 @@ const feeder = (startChar, endChar) => (token, stream) => {
         if (!count) {
           end = pos;
         }
-      break;
+        break;
+      default:
     }
   }
-  token.length = end;
-  token.text = stream.substring(1, end - 1);
-}
+  result.length = end;
+  result.text = stream.substring(1, end - 1);
+};
 
+/* order is important as it matches from top to bottom, if it finds a match it is done */
 export const TokenTypes = {
   '>': rMatch(/^>/, null),
-  'ws': rToken(/^(\s+)/),
+  ws: rToken(/^(\s+)/),
   assign: rToken(/^(=)/),
   expression: rMatch(/^{/, feeder('{', '}')),
   comment: rToken(/^<!--(.*?)-->/),
   startTag: rToken(/^<([A-Za-z][A-Za-z0-9]*)[\s|>]?/),
-  literal: rToken(/^([A-Za-z]+)/),
-  string: rToken(/^"(?:[^"\\]|\\.)*"/),
-  endTag: rToken(/^\/>|<\/(.+?)>/)
-}
+  attributeName: rToken(/^([A-Za-z]+)[\s]*?=/, -1),
+  string: rToken(/^"(?:[^"\\]|\\.)*"|^'(?:[^'\\]|\\.)*'/),
+  endTag: rToken(/^\/>|^<\/(.+?)>/),
+  text: rToken(/^([^{^}^<^>]+)/)
+};
 
 export default class JsxLexer {
   constructor(jsx) {
@@ -56,18 +64,18 @@ export default class JsxLexer {
     this['>'] = function () {
       this._fwd(1);
       return this.peek();
-    }
+    };
   }
   peek() {
     let token;
-    for (let type in TokenTypes) {
+    for (const type in TokenTypes) {
       if (TokenTypes.hasOwnProperty(type)) {
         if (TokenTypes[type].match(this._stream)) {
           const process = TokenTypes[type].process;
           if (!process) {
-            //skip char if no process method
+            // skip char if no process method
             this._fwd(type.length);
-          } else if(type==='ws') {
+          } else if (type === 'ws') {
             const ws = {};
             process(ws, this._stream);
             this._fwd(ws.length);
@@ -80,26 +88,13 @@ export default class JsxLexer {
       }
     }
     if (!token) {
-      throw new Error('Jsx Lexing error: ' + this._stream);
+      throw new Error(`Jsx Lexing error: ${this._stream}`);
     }
     return token;
   }
 
-  startTag(token) {
-    const res = this._stream.match(TokenTypes.startTag);
-    token.text = res[1];
-    token.length = res[0].length;
-  }
-
-  comment(token) {
-    var end = this._stream.indexOf('-->');
-    token.length = end - this._pos + 3;
-    token.text = this._stream.substring(4, end);
-    return token;
-  }
-
   isNext(tokenType) {
-    return this.peek().type===tokenType;
+    return this.peek().type === tokenType;
   }
 
   next() {

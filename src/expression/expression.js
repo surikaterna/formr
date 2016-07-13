@@ -8,4 +8,4 @@ export default class Expr {
   toString() {
     return this._expression;
   }
-};
+}

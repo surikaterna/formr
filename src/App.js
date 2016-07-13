@@ -43,59 +43,66 @@ Json:
     children: [{}]
   }}
   */
-const jsx = `
+/*const jsx = `
   <Ui>
     <ModelField value={name} schema={{ type:"string", "title":"Name"}}/>
     <ModelField value={name} schema={{ type:"string", "title":"Name"}}/>
     <ModelField value={age} schema={{ type:"number", "title":"Name"}}/>
     <ModelField value={age} schema={{ type:"number", "title":"Name"}}/>
   </Ui>
-`
+`*/
+const jsx = `
+  <div>
+    <ModelField value={name}/>
+  </div>`;
 
-const uiDef = parser.parse(jsx).props.children;
+const uiDef = parser.parse(jsx);
 
-const modelValue = {
-  name: 'Bertil',
-  age: 12
-}
-
-function resolver(x) {
-  return factories[x.type];
-}
 const factories = {
-  'InputText': props => <input type="text" {...props}></input>,
-  'InputNumber': props => <input type="number" {...props}></input>,
-  'Grid': props => <b>Grid</b>,
-  'Cell': props => <b>Cell</b>,
-  'ForEach': props => props.value.map(x => x),
+  InputText: props => <input type="text" {...props}></input>,
+  InputNumber: props => <input type="number" {...props}></input>,
+  Grid: () => <b>Grid</b>,
+  Cell: () => <b>Cell</b>,
+  ForEach: props => props.value.map(x => x),
   ModelField
 };
+
 const ComponentFactory = (name) => {
+  if (!name || !name.length) {
+    throw new Error('cf');
+  }
   let component = factories[name];
   if (!component) {
-    component = x => <span>Uh oh!No factory found for component type <em>{name}</em></span>
+    component = () => <span style={{ color: 'red' }}>No factory found for component type <em>{name}</em></span>;
   }
   return component;
-}
+};
 
-const FormField = props => { const C = ComponentFactory(props.name, props); return <C {...props}/> };
+const FormField = props => { const C = ComponentFactory(props.name, props); return <C {...props}/>; };
+
 const data = {
   name: 'Andreas'
-}
+};
+
 const schema = {
   type: 'object',
   properties: {
     name: { type: 'string' }
   }
-}
+};
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: data
+    };
+  }
   render() {
-    /*<Form form={uiDef} resolver={x=>resolver(x)} data={data} factory={ComponentFactory} />*/
     return (
       <div>
         <h1>JSX</h1>
-        <Ui ui={uiDef} value={modelValue} onChange={(val) => { console.log(val) } } componentFactory={ComponentFactory}/>
+        <Ui ui={uiDef} value={this.state.value} onChange={(value) => { this.setState({ value }); } } componentFactory={ComponentFactory} schema={schema}/>
       </div>
     );
   }

@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import BoundField from './bound-field';
 
-const _componentConverter =  {
-  'string': 'InputText',
-  'number': 'InputNumber'
-}
+const _componentConverter = {
+  string: 'InputText',
+  number: 'InputNumber',
+  object: 'InputText'
+};
 
 export default class ModelField extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    console.log('ModelField', this.props);
-    const fieldType = _componentConverter[this.props.schema.type];
-    const Component = this.props.componentFactory(fieldType);
-    return <Component {...this.props}/>
+    // schema, value, valuetype,
+    console.log(this.props);
+    console.log(this.props.value);
+    const type = (this.props.schema && this.props.schema.type) || 'string';
+    const fieldType = _componentConverter[type];
+    const C = this.props.componentFactory(fieldType);
+    return <C {...this.props}/>;
   }
 }
