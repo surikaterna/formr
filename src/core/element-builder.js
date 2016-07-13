@@ -1,6 +1,9 @@
 import React from 'react';
 const isUpperCase = ch => ch === ch.toUpperCase();
 
+/**
+ * Converts from a java-script object like structure to a react element tree
+ */
 export default class ElementBuilder {
   constructor(componentFactory) {
     this._componentFactory = componentFactory || (() => null);
@@ -8,8 +11,14 @@ export default class ElementBuilder {
   build(node, defaultProps) {
     let result;
     let type = node.type;
+    let options = {};
     if (isUpperCase(type[0])) {
       type = this._componentFactory(type);
+      if (typeof type === 'object') {
+        options = type.options;
+        type = type.component;
+      }
+      console.log(type, typeof type, type instanceof Object);
       if (!type) {
         return <b>Unable to resolve <i>{node.type}</i></b>;
       }
@@ -19,7 +28,7 @@ export default class ElementBuilder {
       children = node.props.children.map(ch => this._child(ch, defaultProps));
     }
     const props = Object.assign({}, defaultProps, node.props);
-
+    console.log(node.type, options);
     if (children) {
       children = children.length === 1 ? children[0] : children;
       result = React.createElement(type, props, children);

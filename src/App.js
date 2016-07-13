@@ -64,7 +64,7 @@ const factories = {
   Grid: () => <b>Grid</b>,
   Cell: () => <b>Cell</b>,
   ForEach: props => props.value.map(x => x),
-  ModelField
+  ModelField: { component: ModelField, options: { a: 1 } }
 };
 
 const ComponentFactory = (name) => {
@@ -113,3 +113,13 @@ export default class App extends Component {
  Field(value=obj, schema=valueSchema)
  * Resolve subtree
  */
+const order = {};
+/*
+const e =
+<Component id="OrderLine">
+  <div>{id}</div>
+</Component>
+<Repeater var="line" value={order.orderLines}>
+  <OrderLine value={line}/>
+</Repeater>;
+*/
