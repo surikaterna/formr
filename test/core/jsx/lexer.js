@@ -41,6 +41,24 @@ describe('JsxLexer', ()=> {
       const lexer = new JsxLexer(`</Ui>`);
       lexer.next().type.should.equal('endTag');
     });
+    it('should lex string', ()=>{
+      const lexer = new JsxLexer(`"test"`);
+      const t = lexer.next();
+      t.type.should.equal('string');
+      t.text.should.equal('test');
+    });
+    it('should lex string with expr', ()=>{
+      const lexer = new JsxLexer(`"{test}"`);
+      const t = lexer.next();
+      t.type.should.equal('string');
+      t.text.should.equal('{test}');
+    });
+    it('should lex string with espaced "', ()=>{
+      const lexer = new JsxLexer('"aa\\"aa"');
+      const t = lexer.next();
+      t.type.should.equal('string');
+      t.text.should.equal('aa\\"aa');
+    });
     it('should lex selfclosing as end tag', ()=>{
       const lexer = new JsxLexer(`/>`);
       lexer.next().type.should.equal('endTag');
@@ -52,6 +70,16 @@ describe('JsxLexer', ()=> {
       lexer.next().type.should.equal('assign');
       lexer.next().type.should.equal('expression');
       lexer.next().type.should.equal('endTag');
+    });
+    it('should lex self closing tag', ()=>{
+      const lexer = new JsxLexer(`<Ui/>`);
+      lexer.next().type.should.equal('startTag');
+      lexer.next().type.should.equal('endTag');
+    });
+    it('should ingore whitespace', ()=>{
+      const lexer = new JsxLexer('<Ui> <Ui>');
+      lexer.next().type.should.equal('startTag');
+      lexer.next().type.should.equal('startTag');
     });
   });
 });

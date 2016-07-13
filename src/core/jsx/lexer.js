@@ -9,6 +9,11 @@ const rExtract = (re) => (token, stream) => {
   const match = stream.match(re);
   token.text = match[1];
   token.length = match[0].length;
+
+  // hack for string match
+  if(!token.text) {
+    token.text = match[0].substring(1, match[0].length-1);
+  }
 }
 
 const rToken = re => rMatch(re, rExtract(re));
@@ -33,13 +38,14 @@ const feeder = (startChar, endChar) => (token, stream) => {
 
 export const TokenTypes = {
   '>': rMatch(/^>/, null),
+  'ws': rToken(/^(\s+)/),
   assign: rToken(/^(=)/),
   expression: rMatch(/^{/, feeder('{', '}')),
   comment: rToken(/^<!--(.*?)-->/),
-  startTag: rToken(/^<([A-Za-z][A-Za-z0-9]*)[\s|>]/),
-  literal: rToken(/^[A-Za-z]+/),
+  startTag: rToken(/^<([A-Za-z][A-Za-z0-9]*)[\s|>]?/),
+  literal: rToken(/^([A-Za-z]+)/),
   string: rToken(/^"(?:[^"\\]|\\.)*"/),
-  endTag: rToken(/\/>|<\/(.+?)>/)
+  endTag: rToken(/^\/>|<\/(.+?)>/)
 }
 
 export default class JsxLexer {
@@ -61,6 +67,10 @@ export default class JsxLexer {
           if (!process) {
             //skip char if no process method
             this._fwd(type.length);
+          } else if(type==='ws') {
+            const ws = {};
+            process(ws, this._stream);
+            this._fwd(ws.length);
           } else {
             token = { type };
             if (process(token, this._stream));
@@ -90,7 +100,7 @@ export default class JsxLexer {
 
   isNext(tokenType) {
     return this.peek().type===tokenType;
-  } 
+  }
 
   next() {
     const token = this.peek();

@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import Form from './form';
 import Expr from './expression';
 import Ui from './ui';
-import ModelField from './core/model-field';
+import ModelField from './fields/model-field';
+
+import JsxParser from './core/jsx/parser';
+const parser = new JsxParser();
+
 
 //<Import name='/asdda/aasd/asd/asd'>
 
@@ -39,31 +43,16 @@ Json:
     children: [{}]
   }}
   */
+const jsx = `
+  <Ui>
+    <ModelField value={name} schema={{ type:"string", "title":"Name"}}/>
+    <ModelField value={name} schema={{ type:"string", "title":"Name"}}/>
+    <ModelField value={age} schema={{ type:"number", "title":"Name"}}/>
+    <ModelField value={age} schema={{ type:"number", "title":"Name"}}/>
+  </Ui>
+`
 
-
-const uiDef = [
-  {
-    type: 'ModelField',
-    props: {
-      value: Expr.make('name'),
-      schema: { type: 'string', title: 'Name' }
-    }
-  },
-  {
-    type: 'ModelField',
-    props: {
-      value: Expr.make('name'),
-      schema: { type: 'string', title: 'Name2' }
-    }
-  },  
-  {
-    type: 'ModelField',
-    props: {
-      value: Expr.make('age'),
-      schema: { type: 'number', title: 'Age' }
-    }
-  }  
-]
+const uiDef = parser.parse(jsx).props.children;
 
 const modelValue = {
   name: 'Bertil',
@@ -79,7 +68,7 @@ const factories = {
   'Grid': props => <b>Grid</b>,
   'Cell': props => <b>Cell</b>,
   'ForEach': props => props.value.map(x => x),
-  ModelField 
+  ModelField
 };
 const ComponentFactory = (name) => {
   let component = factories[name];
@@ -105,8 +94,7 @@ export default class App extends Component {
     /*<Form form={uiDef} resolver={x=>resolver(x)} data={data} factory={ComponentFactory} />*/
     return (
       <div>
-        <h1>Hello Discworlds</h1>
-
+        <h1>JSX</h1>
         <Ui ui={uiDef} value={modelValue} onChange={(val) => { console.log(val) } } componentFactory={ComponentFactory}/>
       </div>
     );
