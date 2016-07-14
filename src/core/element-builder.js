@@ -18,7 +18,6 @@ export default class ElementBuilder {
         options = type.options;
         type = type.component;
       }
-      console.log(type, typeof type, type instanceof Object);
       if (!type) {
         return <b>Unable to resolve <i>{node.type}</i></b>;
       }

@@ -12,7 +12,7 @@ const BoundField = Field => class extends Component {
     console.log(val);
   }
   render() {
-    return <Field {...this.props} value={this.state.value} onChange={e => this.handleChange(e) }/>
+    return <Field {...this.props} value={this.state.value} onChange={e => this.handleChange(e) }/>;
   }
 };
 
