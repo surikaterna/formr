@@ -14,7 +14,7 @@ export default class ElementBuilder {
     let options = {};
     if (isUpperCase(type[0])) {
       type = this._componentFactory(type);
-      if (typeof type === 'object') {
+      if (type && typeof type === 'object') {
         options = type.options;
         type = type.component;
       }
@@ -27,7 +27,6 @@ export default class ElementBuilder {
       children = node.props.children.map(ch => this._child(ch, defaultProps));
     }
     const props = Object.assign({}, defaultProps, node.props);
-    console.log(node.type, options);
     if (children) {
       children = children.length === 1 ? children[0] : children;
       result = React.createElement(type, props, children);
