@@ -5,6 +5,9 @@ import Ui from './ui';
 import ModelField from './fields/model-field';
 
 import JsxParser from './core/jsx/parser';
+
+import InputText from './widgets/input-text';
+
 const parser = new JsxParser();
 
 
@@ -60,7 +63,7 @@ const jsx = `
 const uiDef = parser.parse(jsx);
 
 const factories = {
-  InputText: props => <input type="text" {...props}></input>,
+  InputText,
   InputNumber: props => <input type="number" {...props}></input>,
   Grid: () => <b>Grid</b>,
   Cell: () => <b>Cell</b>,
@@ -79,10 +82,9 @@ const ComponentFactory = (name) => {
   return component;
 };
 
-const FormField = props => { const C = ComponentFactory(props.name, props); return <C {...props}/>; };
-
 const data = {
-  name: 'Andreas'
+  name: 'Andreas',
+  age: 12
 };
 
 const schema = {
@@ -95,15 +97,15 @@ const schema = {
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: data
-    };
+    this.state = data;
   }
   render() {
     return (
       <div>
         <h1>JSX</h1>
-        <Ui ui={uiDef} value={this.state.value} onChange={(value) => { this.setState({ value }); } } componentFactory={ComponentFactory} schema={schema}/>
+        <Ui ui={uiDef} value={this.state} onChange={(value) => this.setState(value) } componentFactory={ComponentFactory} schema={schema}/>
+        <InputText value={this.state.name} onChange={(v) => this.setState({ name: v }) }/>
+        {this.state.age}
       </div>
     );
   }

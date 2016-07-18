@@ -48,8 +48,8 @@ export default class DeclaredUi extends Component {
           return <Field key={i++} onChange={e=>console.log(e)} {...componentProps } componentFactory={componentFactory}/>;
         });
     */
-    const result = builder.build(ui, { componentFactory, schema, onChange, $root: this.props.value });
-    return <div className="ui">{ result }</div>
+    const result = builder.build(ui, { onChange, $componentFactory: componentFactory, $schema: schema, $root: this.props.value, $this: this.props.value });
+    return <div className="ui"><form>{ result }</form></div>
   }
 }
 
