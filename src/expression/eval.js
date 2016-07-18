@@ -12,10 +12,10 @@ export default class Evaluator {
     } else if (expr[0] === '{') {
       expr = `(${expr})`;
     }
-
+    const ctx = expression.getContext() || context;
     return function () {
       const res = eval(expr);  // eslint-disable-line no-eval
       return res;
-    }.call(context);
+    }.call(ctx);
   }
 }

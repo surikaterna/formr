@@ -54,6 +54,7 @@ Json:
 const jsx = `
   <div>
     <ModelField value={name}/>
+    <ModelField value={name}/>
   </div>`;
 
 const uiDef = parser.parse(jsx);
