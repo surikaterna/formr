@@ -1,3 +1,6 @@
+/**
+ * get, set, getPath
+ */
 export default class Expr {
   constructor(expr, context) {
     this._expression = expr;
