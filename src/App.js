@@ -7,6 +7,7 @@ import ModelField from './fields/model-field';
 import JsxParser from './core/jsx/parser';
 
 import InputText from './widgets/input-text';
+import InputNumber from './widgets/input-number';
 
 const parser = new JsxParser();
 
@@ -63,13 +64,14 @@ Json:
 const jsx = `
   <div style={{backgroundColor:'pink'}}>
     <ModelField value={name}/>
+    <ModelField value={age}/>
   </div>`;
 
 const uiDef = parser.parse(jsx);
 
 const factories = {
   InputText,
-  InputNumber: props => <input type="number" {...props}></input>,
+  InputNumber,
   Grid: () => <b>Grid</b>,
   Cell: () => <b>Cell</b>,
   ForEach: props => props.value.map(x => x),
@@ -97,7 +99,8 @@ const data = {
 const schema = {
   type: 'object',
   properties: {
-    name: { type: 'string' }
+    name: { type: 'string' },
+    age: { type: 'number' }
   }
 };
 
@@ -111,26 +114,7 @@ export default class App extends Component {
       <div>
         <h1>JSX</h1>
         <Ui ui={uiDef} value={this.state} onChange={(value) => this.setState(value) } componentFactory={ComponentFactory} schema={schema}/>
-        <InputText value={this.state.name} onChange={(v) => this.setState({ name: v }) }/>
-        <InputText2 value={this.state.name} onChange={(v) => this.setState({ name: v }) }/>
-        {this.state.age}
       </div>
     );
   }
 }
-/*
- Form iterates through tree, resolves all children to react components
- and then puts it back again
- Field(value=obj, schema=valueSchema)
- * Resolve subtree
- */
-const order = {};
-/*
-const e =
-<Component id="OrderLine">
-  <div>{id}</div>
-</Component>
-<Repeater var="line" value={order.orderLines}>
-  <OrderLine value={line}/>
-</Repeater>;
-*/

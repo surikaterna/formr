@@ -8,8 +8,7 @@ const _componentConverter = {
   object: 'InputText'
 };
 
-const extactSchemaPath = (expr) => expr.toString();
-
+// Cache previously bound components
 const _boundComponents = new Map();
 
 export default class ModelField extends Component {
@@ -23,13 +22,35 @@ export default class ModelField extends Component {
     return result;
   }
 
-  render() {
-    const type = (this.props.schema && this.props.schema.type) || 'string';
-    const fieldType = _componentConverter[type];
-    let Widget = this.props.$componentFactory(fieldType);
-    if (this.props.value instanceof Expression) {
-      Widget = this._bind(Widget);
+  _hasExpression() {
+    return this.props.value instanceof Expression;
+  }
+
+  _getWidget() {
+    let result;
+    let type;
+    if (this.props.type) {
+
+    } else if (this._hasExpression()) {
+      const path = this.props.value.getAsPath();
+      type = this.props.$schema.properties[path].type;
     }
-    return <Widget {...this.props}/>;
+    const fieldType = _componentConverter[type];
+    result = this.props.$componentFactory(fieldType);
+
+    return result;
+  }
+
+  render() {
+    let Widget = this._getWidget();
+
+    const type = (this.props.schema && this.props.schema.type) || 'string';
+
+    let path;
+    if (this._hasExpression()) {
+      Widget = this._bind(Widget);
+      path = this.props.value.getAsPath();
+    }
+    return <Widget {...this.props} key={path}/>;
   }
 }

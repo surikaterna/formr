@@ -11,7 +11,6 @@ export default class ElementBuilder {
     this._componentFactory = componentFactory || (() => null);
   }
   build(node, defaultProps) {
-    let result;
     let type = node.type;
     let options = {};
     let isComponent = false;
@@ -47,8 +46,7 @@ export default class ElementBuilder {
     if (children) {
       children = children.length === 1 ? children[0] : children;
     }
-    result = React.createElement(type, props, children);
-    return result;
+    return React.createElement(type, props, children);
   }
 
   _child(child, defaultProps) {
