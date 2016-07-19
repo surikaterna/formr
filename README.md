@@ -11,7 +11,7 @@ This library was created to have a fairly simple but still highly customized way
 
 ## Example
 ### Schema
-```json
+```javascript
 {
   type: 'object',
   properties: {
@@ -39,8 +39,8 @@ Used to to parse jsx as a string and return an object version which fairly close
 Takes object (ui-definition) that was given from jsx parser and build react element structure with
 React.createElement.
 Responsible for:
-- convert \<div> to React html element
-- convert \<ComponentName> to corresponding React element but resolving **ComponentName** to real React component class or pure function
+- convert `<div>` to React html element
+- convert `<ComponentName>` to corresponding React element but resolving **ComponentName** to real React component class or pure function
 - Has some additional features to enable complex use casese such as creating Repeaters, inline Components
 ### Fields
 Maps/binds between data-model and UI
@@ -60,14 +60,14 @@ TBD
 
 # Supported features
 ## JSX
-- [x] \<Object> - Support Component tags
-- [x] \<htmlTag> - Support HTML tags
-- [x] \<SelfClosing /> / Support tags that are self closing
-- [x] \<Object attribute="value" /> - support attributes
-- [x] \<Object attribute={1+1} /> - support expression attributes
-- [x] \<div>Text\</div> - support text children
-- [ ] \<div>{expression}\</div> - support expression children
-- [ ] \<div {...object}>\</div> - support spread attribute
+- [x] `<Object>` - Support Component tags
+- [x] `<htmlTag>` - Support HTML tags
+- [x] `<SelfClosing />` - Support tags that are self closing
+- [x] `<Object attribute="value" />` - support attributes
+- [x] `<Object attribute={1+1} />` - support expression attributes
+- [x] `<div>Text\</div> - support text children
+- [ ] `<div>{expression}</div>` - support expression children
+- [ ] `<div {...object}></div>` - support spread attribute
 
 ## ElementBuilder
 - [x] Build html elmeent
