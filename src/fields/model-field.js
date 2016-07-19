@@ -10,16 +10,24 @@ const _componentConverter = {
 };
 
 const extactSchemaPath = (expr) => expr.toString();
+const BoundField2 = Field => function BoundField2(props) {
+  return <div style={{ 'backgroundColor': 'red' }}><Field {...props}/></div >
+}
 
-// TODO: extend to support proper paths...
-const valueSetter = (object, path, value) => object[path] = value;
-
+const BoundField3 = Field => class extends Component {
+  render() {
+    console.log('B3', this.props);
+    console.log('B3', Field);
+    return <Field {...this.props}/>
+  }
+}
 export default class ModelField extends Component {
 
   render() {
     // schema, value, valuetype,
     const props = {...this.props };
     let {schema, value} = props;
+
     if (this.props.value instanceof Expression) {
       console.log('got expression');
       const path = this.props.value.toString();
@@ -29,8 +37,11 @@ export default class ModelField extends Component {
 
     const type = (this.props.schema && this.props.schema.type) || 'string';
     const fieldType = _componentConverter[type];
-    const C = this.props.$componentFactory(fieldType);
-    console.log(C);
-    return <C {...props} onChange={(e) => this.props.onChange(Object.assign({}, {}, { name: e })) }/>;
+    //    const C = BoundField2(this.props.$componentFactory(fieldType));
+    const TT = this.props.$componentFactory(fieldType);
+    const C = BoundField3(TT);
+//    const C = TT;
+    //value=this.props.value.get();
+    return <C {...props} value={props.$root.name} onChange={v=>this.props.onChange({name:v})}/>;
   }
 }

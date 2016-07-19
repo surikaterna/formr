@@ -1,19 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-const BoundField = Field => class extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { value: props.value };
-  }
-  handleChange(event) {
-    // update real model (or both) instead
-    this.setState({ value: event.target.value });
-    val = event.target.value;
-    console.log(val);
-  }
-  render() {
-    return <Field {...this.props} value={this.state.value} onChange={e => this.handleChange(e) }/>;
-  }
+const BoundField = Field => function BoundField(props) {
+  console.log('>>', props);
+  return <div style={{'backgroundColor':'green'}}><Field {...props} value={props.value.get()} onChange={(v) => props.onChange({name: v})}/></div>;
 };
 
 export default BoundField;

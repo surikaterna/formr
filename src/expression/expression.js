@@ -1,6 +1,5 @@
-/**
- * get, set, getPath
- */
+import Evaluator from './eval';
+
 export default class Expr {
   constructor(expr, context) {
     this._expression = expr;
@@ -10,7 +9,7 @@ export default class Expr {
     return new Expr(expr);
   }
   toString() {
-    return this._expression;
+    return `{${this._expression}}`;
   }
 
   withContext(context) {
@@ -18,5 +17,16 @@ export default class Expr {
   }
   getContext() {
     return this._context;
+  }
+
+  get() {
+    return new Evaluator().eval(this);
+  }
+
+  set(val) {
+    return new Evaluator().set(this, val);
+  }
+  getAsPath() {
+    return this._expression;
   }
 }

@@ -10,6 +10,8 @@ import InputText from './widgets/input-text';
 
 const parser = new JsxParser();
 
+console.log('React version', React.version);
+
 
 //<Import name='/asdda/aasd/asd/asd'>
 
@@ -56,7 +58,6 @@ Json:
 `*/
 const jsx = `
   <div>
-    <ModelField value={name}/>
     <ModelField value={name}/>
   </div>`;
 
