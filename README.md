@@ -65,7 +65,7 @@ TBD
 - [x] `<SelfClosing />` - Support tags that are self closing
 - [x] `<Object attribute="value" />` - support attributes
 - [x] `<Object attribute={1+1} />` - support expression attributes
-- [x] `<div>Text\</div> - support text children
+- [x] `<div>Text\</div` - support text children
 - [ ] `<div>{expression}</div>` - support expression children
 - [ ] `<div {...object}></div>` - support spread attribute
 
