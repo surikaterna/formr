@@ -11,6 +11,9 @@ const _componentConverter = {
 // Cache previously bound components
 const _boundComponents = new Map();
 
+/**
+ * ModelField checks
+ */
 export default class ModelField extends Component {
 
   _bind(component) {
@@ -26,6 +29,15 @@ export default class ModelField extends Component {
     return this.props.value instanceof Expression;
   }
 
+    /**
+     * if props.type = 'function' use it as widget
+     * if props.type = 'json-schema-type' resolve to correct component type
+     * else if props.type = 'component-type' resolve component
+     * else if no props.type but props.value is an expression,
+     * take path from expression and resolve the corresponding type from schema
+     * else use type = string
+     *
+     */
   _getWidget() {
     let result;
     let type;
