@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import BoundField from './bound-field';
+import bindField from './bound-field';
 import Expression from '../expression/expression';
-import Evaluator from '../expression/eval';
 
 const _componentConverter = {
   string: 'InputText',
@@ -10,38 +9,27 @@ const _componentConverter = {
 };
 
 const extactSchemaPath = (expr) => expr.toString();
-const BoundField2 = Field => function BoundField2(props) {
-  return <div style={{ 'backgroundColor': 'red' }}><Field {...props}/></div >
-}
 
-const BoundField3 = Field => class extends Component {
-  render() {
-    console.log('B3', this.props);
-    console.log('B3', Field);
-    return <Field {...this.props}/>
-  }
-}
+const _boundComponents = new Map();
+
 export default class ModelField extends Component {
 
-  render() {
-    // schema, value, valuetype,
-    const props = {...this.props };
-    let {schema, value} = props;
-
-    if (this.props.value instanceof Expression) {
-      console.log('got expression');
-      const path = this.props.value.toString();
-      console.log('PATH', path);
-      props.value = new Evaluator().eval(this.props.value);
+  _bind(component) {
+    let result = _boundComponents.get(component);
+    if (!result) {
+      result = bindField(component);
+      _boundComponents.set(component, result); // eslint-disable-line
     }
+    return result;
+  }
 
+  render() {
     const type = (this.props.schema && this.props.schema.type) || 'string';
     const fieldType = _componentConverter[type];
-    //    const C = BoundField2(this.props.$componentFactory(fieldType));
-    const TT = this.props.$componentFactory(fieldType);
-    const C = BoundField3(TT);
-//    const C = TT;
-    //value=this.props.value.get();
-    return <C {...props} value={props.$root.name} onChange={v=>this.props.onChange({name:v})}/>;
+    let Widget = this.props.$componentFactory(fieldType);
+    if (this.props.value instanceof Expression) {
+      Widget = this._bind(Widget);
+    }
+    return <Widget {...this.props}/>;
   }
 }

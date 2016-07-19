@@ -32,7 +32,6 @@ export default class ElementBuilder {
       children = node.props.children.map(ch => this._child(ch, defaultProps));
     }
     let props = Object.assign({}, defaultProps, node.props);
-    console.log('PROPS', props);
     Object.keys(props).forEach((key) => {
       const prop = props[key];
       if (prop instanceof Expression) {
@@ -45,14 +44,10 @@ export default class ElementBuilder {
       props = node.props;
     }
 
-    console.log('PROPS>>', isComponent, props);
-
     if (children) {
       children = children.length === 1 ? children[0] : children;
-      result = React.createElement(type, props, children);
-    } else {
-      result = React.createElement(type, props);
     }
+    result = React.createElement(type, props, children);
     return result;
   }
 

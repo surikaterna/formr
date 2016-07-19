@@ -11,6 +11,10 @@ import InputText from './widgets/input-text';
 const parser = new JsxParser();
 
 console.log('React version', React.version);
+const BoundField2 = Field => function BoundField2(props) {
+  return <div style={{ 'backgroundColor': 'red' }}><Field {...props}/></div >
+}
+
 
 
 //<Import name='/asdda/aasd/asd/asd'>
@@ -57,7 +61,7 @@ Json:
   </Ui>
 `*/
 const jsx = `
-  <div>
+  <div style={{backgroundColor:'pink'}}>
     <ModelField value={name}/>
   </div>`;
 
@@ -69,8 +73,10 @@ const factories = {
   Grid: () => <b>Grid</b>,
   Cell: () => <b>Cell</b>,
   ForEach: props => props.value.map(x => x),
-  ModelField: { component: ModelField, options: { a: 1 } }
+  ModelField: { component: ModelField, options: { includeRootProperties: true } }
 };
+
+const InputText2 = BoundField2(InputText);
 
 const ComponentFactory = (name) => {
   if (!name || !name.length) {
@@ -106,6 +112,7 @@ export default class App extends Component {
         <h1>JSX</h1>
         <Ui ui={uiDef} value={this.state} onChange={(value) => this.setState(value) } componentFactory={ComponentFactory} schema={schema}/>
         <InputText value={this.state.name} onChange={(v) => this.setState({ name: v }) }/>
+        <InputText2 value={this.state.name} onChange={(v) => this.setState({ name: v }) }/>
         {this.state.age}
       </div>
     );

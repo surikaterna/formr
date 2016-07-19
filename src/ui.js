@@ -49,7 +49,7 @@ export default class DeclaredUi extends Component {
         });
     */
     const result = builder.build(ui, { onChange, $componentFactory: componentFactory, $schema: schema, $root: this.props.value, $this: this.props.value });
-    return <div className="ui">{result.props.children }</div>
+    return <div className="ui"><div>{new Date().toString()}||{result }</div></div>
   }
 }
 
