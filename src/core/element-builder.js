@@ -39,6 +39,11 @@ export default class ElementBuilder {
         props[key] = prop.withContext(props.$this);
       }
     });
+    // have to support multiple bindings with same path? :)
+    // if (props.value instanceof Expression) {
+    //   props.key = props.value.getAsPath();
+    // }
+
     if (!isComponent) {
       props = node.props;
     }
