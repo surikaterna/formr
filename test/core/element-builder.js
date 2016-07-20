@@ -1,3 +1,4 @@
+import React from 'react';
 import should from 'should';
 import JsxParser from '../../src/core/jsx/parser';
 import ElementBuilder from '../../src/core/element-builder';
@@ -18,14 +19,14 @@ describe('ElementBuilder', () => {
     });
     it('should handle default props', () => {
       const parser = new JsxParser();
-      const builder = new ElementBuilder();
-      const res = builder.build(parser.parse('<b>Hej</b>'), { a: 1 });
+      const builder = new ElementBuilder(() => () => <div></div>);
+      const res = builder.build(parser.parse('<B>Hej</B>'), { a: 1 });
       res.props.a.should.equal(1);
     });
     it('should pass default props to children', () => {
       const parser = new JsxParser();
-      const builder = new ElementBuilder();
-      const res = builder.build(parser.parse('<b><i>Hej</i></b>'), { a: 1 });
+      const builder = new ElementBuilder(() => () => <div></div>);
+      const res = builder.build(parser.parse('<b><I>Hej</I></b>'), { a: 1 });
       res.props.children.props.a.should.equal(1);
     });
   });

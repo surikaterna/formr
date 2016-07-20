@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import bindField from './bound-field';
 import Expression from '../expression/expression';
+import Schema from '../schema';
 
 const _componentConverter = {
   string: 'InputText',
@@ -55,8 +56,7 @@ export default class ModelField extends Component {
     } else if (this._hasExpression()) {
       const path = this.props.value.getAsPath();
 
-      // Schema Helper please
-      const type = this.props.$schema.properties[path].type;
+      const type = new Schema(this.props.$schema).getType(path);
       result = this._getWidgetFromType(type);
     } else {
       result = this._getWidgetFromType('string');
