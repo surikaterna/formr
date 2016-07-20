@@ -65,6 +65,7 @@ const jsx = `
   <div style={{backgroundColor:'pink'}}>
     <ModelField value={name}/>
     <ModelField value={age}/>
+    <ModelField value={}/>
   </div>`;
 
 const uiDef = parser.parse(jsx);

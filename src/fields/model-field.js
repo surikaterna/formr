@@ -11,6 +11,9 @@ const _componentConverter = {
 // Cache previously bound components
 const _boundComponents = new Map();
 
+/**
+ * ModelField checks
+ */
 export default class ModelField extends Component {
 
   _bind(component) {
@@ -26,31 +29,48 @@ export default class ModelField extends Component {
     return this.props.value instanceof Expression;
   }
 
+  _getWidgetFromType(type) {
+    const fieldType = _componentConverter[type] || type;
+    return this.props.$componentFactory(fieldType);
+  }
+
+  /**
+   * if props.type = 'function' use it as widget
+   * if props.type = 'json-schema-type' resolve to correct component type
+   * else if props.type = 'component-type' resolve component
+   * else if no props.type but props.value is an expression,
+   * take path from expression and resolve the corresponding type from schema
+   * else use type = string
+   *
+   */
   _getWidget() {
     let result;
-    let type;
     if (this.props.type) {
-
+      const type = this.props.type;
+      if (typeof type === 'function') {
+        result = type;
+      } else {
+        result = this._getWidgetFromType(type);
+      }
     } else if (this._hasExpression()) {
       const path = this.props.value.getAsPath();
-      type = this.props.$schema.properties[path].type;
-    }
-    const fieldType = _componentConverter[type];
-    result = this.props.$componentFactory(fieldType);
 
+      // Schema Helper please
+      const type = this.props.$schema.properties[path].type;
+      result = this._getWidgetFromType(type);
+    } else {
+      result = this._getWidgetFromType('string');
+    }
     return result;
   }
 
   render() {
     let Widget = this._getWidget();
 
-    const type = (this.props.schema && this.props.schema.type) || 'string';
-
-    let path;
     if (this._hasExpression()) {
       Widget = this._bind(Widget);
-      path = this.props.value.getAsPath();
     }
-    return <Widget {...this.props} key={path}/>;
+
+    return <Widget {...this.props}/>;
   }
 }
