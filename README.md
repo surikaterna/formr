@@ -75,9 +75,6 @@ TBD
 - [ ] Execute expression and put in props for component
 - [ ] Override so children is not created
 - [ ] Support in template defined Components
-- [ ] Support in template defined Components
-
-
 
 ## JSON schema
 - [ ] type object

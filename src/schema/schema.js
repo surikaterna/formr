@@ -13,7 +13,7 @@ export default class Schema {
 
   _getCurrentSchema(path) {
     let result = this._schema;
-    if (path) {
+    if (path && path.length !== 0) {
       result = result.properties[path];
     }
     return result;
@@ -22,11 +22,20 @@ export default class Schema {
   getType(path) {
     return this._getCurrentSchema(path).type;
   }
-  getPropertiesAtPath(path) {
+
+  getSchema(path) {
+    return new Schema(this._getCurrentSchema(path));
+  }
+
+  getProperties(path) {
     if (!this.isObject(path)) {
       throw new Error(`Properties only exist in object, this is ${this.getType(path)}`);
     }
+    const props = [];
+    const schema = this._getCurrentSchema(path);
+    return schema.properties;
   }
+
   isRef(path) {
     _notImplemented(path);
   }
@@ -39,7 +48,15 @@ export default class Schema {
     return this.isType(path, 'array');
   }
 
+  isString(path) {
+    return this.isType(path, 'string');
+  }
+
   isType(path, type) {
     return this.getType(path) === type;
+  }
+
+  asJson() {
+    return this._schema;
   }
 }

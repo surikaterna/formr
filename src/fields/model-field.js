@@ -6,14 +6,14 @@ import Schema from '../schema';
 const _componentConverter = {
   string: 'InputText',
   number: 'InputNumber',
-  object: 'InputText'
+  object: 'SchemaObject'
 };
 
 // Cache previously bound components
 const _boundComponents = new Map();
 
 /**
- * ModelField checks
+ * ModelField
  */
 export default class ModelField extends Component {
 
@@ -21,7 +21,7 @@ export default class ModelField extends Component {
     let result = _boundComponents.get(component);
     if (!result) {
       result = bindField(component);
-      _boundComponents.set(component, result); // eslint-disable-line
+      _boundComponents.set(component, result);
     }
     return result;
   }
@@ -55,13 +55,21 @@ export default class ModelField extends Component {
       }
     } else if (this._hasExpression()) {
       const path = this.props.value.getAsPath();
-
       const type = new Schema(this.props.$schema).getType(path);
       result = this._getWidgetFromType(type);
     } else {
       result = this._getWidgetFromType('string');
     }
     return result;
+  }
+  _getProps() {
+    const props = {};
+    if (this._hasExpression()) {
+      const path = this.props.value.getAsPath();
+      const schema = new Schema(this.props.$schema).getSchema(path).asJson();
+      props.$schema = schema;
+    }
+    return props;
   }
 
   render() {
@@ -70,7 +78,7 @@ export default class ModelField extends Component {
     if (this._hasExpression()) {
       Widget = this._bind(Widget);
     }
-
-    return <Widget {...this.props}/>;
+    const props = this._getProps();
+    return <Widget {...this.props} {...props}/>;
   }
 }

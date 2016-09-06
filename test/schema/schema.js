@@ -27,4 +27,11 @@ describe('Schema', () => {
       r.should.equal(false);
     });
   });
+  describe('#getProperties', () => {
+    it('should return array with length same as properties', () => {
+      const schema = new Schema(SIMPEL_OBJECT);
+      const r = schema.getProperties();
+      Object.keys(r).length.should.equal(1);
+    });
+  });
 });

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import Form from './form';
-import Expr from './expression';
-import Ui from './ui';
-import ModelField from './fields/model-field';
 
+import ModelField from './fields/model-field';
+import SchemaObject from './fields/schema-object';
+import Ui from './ui';
 import JsxParser from './core/jsx/parser';
 
 import InputText from './widgets/input-text';
@@ -61,14 +60,7 @@ Json:
     <ModelField value={age} schema={{ type:"number", "title":"Name"}}/>
   </Ui>
 `*/
-const jsx = `
-  <div style={{backgroundColor:'pink'}}>
-    <ModelField value={name}/>
-    <ModelField value={age}/>
-    <ModelField value={}/>
-  </div>`;
 
-const uiDef = parser.parse(jsx);
 
 const factories = {
   InputText,
@@ -76,7 +68,8 @@ const factories = {
   Grid: () => <b>Grid</b>,
   Cell: () => <b>Cell</b>,
   ForEach: props => props.value.map(x => x),
-  ModelField: { component: ModelField, options: { includeRootProperties: true } }
+  ModelField: { component: ModelField, options: { includeRootProperties: true } },
+  SchemaObject
 };
 
 const InputText2 = BoundField2(InputText);
@@ -92,16 +85,36 @@ const ComponentFactory = (name) => {
   return component;
 };
 
+const jsx = `
+  <div style={{backgroundColor:'pink'}}>
+    <ModelField value={name}/>
+    <ModelField value={age}/>
+    <ModelField value={address}/>
+  </div>`;
+
+const uiDef = parser.parse(jsx);
+
 const data = {
   name: 'Andreas',
-  age: 12
+  age: 12,
+  address: {
+    street: 'Bell Man Street',
+    streetNumber: 2
+  }
 };
 
 const schema = {
   type: 'object',
   properties: {
     name: { type: 'string' },
-    age: { type: 'number' }
+    age: { type: 'number' },
+    address: {
+      type: 'object',
+      properties: {
+        street: { type: 'string' },
+        streetNumber: { type: 'number' }
+      }
+    }
   }
 };
 
@@ -115,6 +128,7 @@ export default class App extends Component {
       <div>
         <h1>JSX</h1>
         <Ui ui={uiDef} value={this.state} onChange={(value) => this.setState(value) } componentFactory={ComponentFactory} schema={schema}/>
+        <span>{this.state.address.street}</span>
       </div>
     );
   }

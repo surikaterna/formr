@@ -1,6 +1,6 @@
 
 /**
- * Not the time to implement a expression parser/interpretator...
+ * Not the time to implement a JS expression parser/interpretator...
  */
 export default class Evaluator {
   eval(expression, context) {
@@ -22,16 +22,19 @@ export default class Evaluator {
     }.call(ctx);
   }
   _makeSet(expr) {
-    // looks lovely...
-    return this._wrap(`${expr}=$$$val`);
+    return this._wrap(`${this._expr(expr)}=$$$val`);
   }
-  _wrap(expr) {
+  _expr(expr) {
     let result = expr;
-    if (!result.startsWith('this.') && result[0] !== '{') {
+    if (result.length === 0) {
+      result = 'this';
+    } else if (!result.startsWith('this.') && result[0] !== '{') {
       result = `this.${result}`;
-    } else if (result[0] === '{') {
-      result = `(${result})`;
     }
     return result;
+  }
+
+  _wrap(expr) {
+    return `(${this._expr(expr)})`;
   }
 }
