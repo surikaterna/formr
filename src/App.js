@@ -5,12 +5,26 @@ import SchemaObject from './fields/schema-object';
 import Ui from './ui';
 import JsxParser from './core/jsx/parser';
 
-import InputText from './widgets/input-text';
-import InputNumber from './widgets/input-number';
+import InputText from './widgets/material/input-text';
+import InputNumber from './widgets/material/input-number';
+
+import Grid from './widgets/pure/grid';
+import { Cell } from 'react-pure';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
 
 const parser = new JsxParser();
 
 console.log('React version', React.version);
+
+
+
 const BoundField2 = Field => function BoundField2(props) {
   return <div style={{ 'backgroundColor': 'red' }}><Field {...props}/></div >
 }
@@ -22,6 +36,22 @@ const BoundField2 = Field => function BoundField2(props) {
 //<Component name="OrderLine">
 //</Component>
 
+/*
+When someone does a ref in the schema matching below (maybe always do a match check?)
+  <Component match="/definitions/...../">
+    <Panel title="Aloha">
+      <FieldContainer>
+        <ModelField.../>
+        <ModelField.../>
+        <ModelField.../>
+        <ModelField.../>
+        <ModelField.../>
+        <ModelField.../>
+        <ModelField.../>
+      </FieldContainer>
+    </Panel>
+  </Component>
+*/
 /*
 Json:
  { arr: [{id: 123, age:234}]}
@@ -65,7 +95,7 @@ Json:
 const factories = {
   InputText,
   InputNumber,
-  Grid: () => <b>Grid</b>,
+  Grid: () => Grid,
   Cell: () => <b>Cell</b>,
   ForEach: props => props.value.map(x => x),
   ModelField: { component: ModelField, options: { includeRootProperties: true } },
@@ -90,6 +120,7 @@ const jsx = `
     <ModelField value={name}/>
     <ModelField value={age}/>
     <ModelField value={address}/>
+    <ModelField value={address.street} type="string"/>
   </div>`;
 
 const uiDef = parser.parse(jsx);
@@ -112,7 +143,9 @@ const schema = {
       type: 'object',
       properties: {
         street: { type: 'string' },
-        streetNumber: { type: 'number' }
+        streetNumber: { type: 'number' },
+        street2: { type: 'string' },
+        street3: { type: 'string' }
       }
     }
   }
@@ -125,11 +158,15 @@ export default class App extends Component {
   }
   render() {
     return (
-      <div>
-        <h1>JSX</h1>
-        <Ui ui={uiDef} value={this.state} onChange={(value) => this.setState(value) } componentFactory={ComponentFactory} schema={schema}/>
-        <span>{this.state.address.street}</span>
-      </div>
+      <MuiThemeProvider>
+      <Grid>
+        <Cell>
+          <h1>JSX</h1>
+          <Ui ui={uiDef} value={this.state} onChange={(value) => this.setState(value) } componentFactory={ComponentFactory} schema={schema}/>
+          <span>{this.state.address.street} {this.state.address.streetNumber}</span>
+        </Cell>
+      </Grid>
+      </MuiThemeProvider>
     );
   }
 }

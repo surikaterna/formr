@@ -6,7 +6,8 @@ import Schema from '../schema';
 const _componentConverter = {
   string: 'InputText',
   number: 'InputNumber',
-  object: 'SchemaObject'
+  object: 'SchemaObject',
+  array: 'SchemaArray'
 };
 
 // Cache previously bound components
