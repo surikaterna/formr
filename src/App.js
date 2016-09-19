@@ -23,14 +23,6 @@ const parser = new JsxParser();
 
 console.log('React version', React.version);
 
-
-
-const BoundField2 = Field => function BoundField2(props) {
-  return <div style={{ 'backgroundColor': 'red' }}><Field {...props}/></div >
-}
-
-
-
 //<Import name='/asdda/aasd/asd/asd'>
 
 //<Component name="OrderLine">
@@ -38,7 +30,7 @@ const BoundField2 = Field => function BoundField2(props) {
 
 /*
 When someone does a ref in the schema matching below (maybe always do a match check?)
-  <Component match="/definitions/...../">
+  <Component match="/definitions/...../" id="MyComponentName">
     <Panel title="Aloha">
       <FieldContainer>
         <ModelField.../>
@@ -102,8 +94,6 @@ const factories = {
   SchemaObject
 };
 
-const InputText2 = BoundField2(InputText);
-
 const ComponentFactory = (name) => {
   if (!name || !name.length) {
     throw new Error('cf');
@@ -159,13 +149,19 @@ export default class App extends Component {
   render() {
     return (
       <MuiThemeProvider>
-      <Grid>
-        <Cell>
-          <h1>JSX</h1>
-          <Ui ui={uiDef} value={this.state} onChange={(value) => this.setState(value) } componentFactory={ComponentFactory} schema={schema}/>
-          <span>{this.state.address.street} {this.state.address.streetNumber}</span>
-        </Cell>
-      </Grid>
+        <Grid>
+          <Cell size="1" md="4/24">
+            <InputText />
+          </Cell>
+          <Cell size="1" md="2/3">
+            <h1>JSX</h1>
+            <Ui ui={uiDef} value={this.state} onChange={(value) => this.setState(value) } componentFactory={ComponentFactory} schema={schema}/>
+            <span>{this.state.address.street} {this.state.address.streetNumber}</span>
+          </Cell>
+          <Cell size="1" md="1/6">
+            A
+          </Cell>
+        </Grid>
       </MuiThemeProvider>
     );
   }

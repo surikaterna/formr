@@ -10,5 +10,5 @@ export default function BaseInput(props) {
     $this,
     ...other
   } = props;
-  return <TextField {...other} value={value} onChange={(e) => onChange(e.target.value) } floatingLabelText={props.title} errorText={props.errorText}/>
+  return <TextField {...other} style={{width: "100%", maxWidth: "256px"}} value={value} onChange={(e) => onChange(e.target.value) } floatingLabelText={props.title} errorText={props.errorText}/>
 };
