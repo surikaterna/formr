@@ -149,19 +149,47 @@ export default class App extends Component {
   render() {
     return (
       <MuiThemeProvider>
+        <div>
         <Grid>
-          <Cell size="1" md="4/24">
-            <InputText />
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 1" />
           </Cell>
-          <Cell size="1" md="2/3">
-            <h1>JSX</h1>
-            <Ui ui={uiDef} value={this.state} onChange={(value) => this.setState(value) } componentFactory={ComponentFactory} schema={schema}/>
-            <span>{this.state.address.street} {this.state.address.streetNumber}</span>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 2" />
           </Cell>
-          <Cell size="1" md="1/6">
-            A
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 3" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 4" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 5" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 6" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 7" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 8" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 9" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 10" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 11" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 12" />
           </Cell>
         </Grid>
+
+        </div>
       </MuiThemeProvider>
     );
   }
