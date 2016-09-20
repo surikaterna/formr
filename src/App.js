@@ -23,14 +23,6 @@ const parser = new JsxParser();
 
 console.log('React version', React.version);
 
-
-
-const BoundField2 = Field => function BoundField2(props) {
-  return <div style={{ 'backgroundColor': 'red' }}><Field {...props}/></div >
-}
-
-
-
 //<Import name='/asdda/aasd/asd/asd'>
 
 //<Component name="OrderLine">
@@ -38,7 +30,7 @@ const BoundField2 = Field => function BoundField2(props) {
 
 /*
 When someone does a ref in the schema matching below (maybe always do a match check?)
-  <Component match="/definitions/...../">
+  <Component match="/definitions/...../" id="MyComponentName">
     <Panel title="Aloha">
       <FieldContainer>
         <ModelField.../>
@@ -102,8 +94,6 @@ const factories = {
   SchemaObject
 };
 
-const InputText2 = BoundField2(InputText);
-
 const ComponentFactory = (name) => {
   if (!name || !name.length) {
     throw new Error('cf');
@@ -159,13 +149,47 @@ export default class App extends Component {
   render() {
     return (
       <MuiThemeProvider>
-      <Grid>
-        <Cell>
-          <h1>JSX</h1>
-          <Ui ui={uiDef} value={this.state} onChange={(value) => this.setState(value) } componentFactory={ComponentFactory} schema={schema}/>
-          <span>{this.state.address.street} {this.state.address.streetNumber}</span>
-        </Cell>
-      </Grid>
+        <div>
+        <Grid>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 1" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 2" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 3" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 4" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 5" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 6" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 7" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 8" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 9" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 10" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 11" />
+          </Cell>
+          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+            <InputText value="ABBA 12" />
+          </Cell>
+        </Grid>
+
+        </div>
       </MuiThemeProvider>
     );
   }
