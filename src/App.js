@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import ModelField from './fields/model-field';
+import Field from './fields/field';
 import SchemaObject from './fields/schema-object';
 import Ui from './ui';
 import JsxParser from './core/jsx/parser';
@@ -17,7 +18,10 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
+if(!global.boot) {
+  injectTapEventPlugin();
+  global.boot=true;
+}
 
 const parser = new JsxParser();
 
@@ -110,7 +114,7 @@ const jsx = `
     <ModelField value={name}/>
     <ModelField value={age}/>
     <ModelField value={address}/>
-    <ModelField value={address.street} type="string"/>
+    <ModelField value={address.street}/>
   </div>`;
 
 const uiDef = parser.parse(jsx);
@@ -151,42 +155,42 @@ export default class App extends Component {
       <MuiThemeProvider>
         <div>
         <Grid>
-          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
-            <InputText value="ABBA 1" />
-          </Cell>
-          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+          <Field size="md" path="asdasd">
+            <InputText value="ABBA 210" />
+          </Field>
+          <Field>
             <InputText value="ABBA 2" />
-          </Cell>
-          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+          </Field>
+          <Field size="md">
             <InputText value="ABBA 3" />
-          </Cell>
-          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+          </Field>
+          <Field size="md">
             <InputText value="ABBA 4" />
-          </Cell>
-          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+          </Field>
+          <Field size="md">
             <InputText value="ABBA 5" />
-          </Cell>
-          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+          </Field>
+          <Field size="md">
             <InputText value="ABBA 6" />
-          </Cell>
-          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+          </Field>
+          <Field size="md">
             <InputText value="ABBA 7" />
-          </Cell>
-          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+          </Field>
+          <Field size="md">
             <InputText value="ABBA 8" />
-          </Cell>
-          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+          </Field>
+          <Field size="md">
             <InputText value="ABBA 9" />
-          </Cell>
-          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+          </Field>
+          <Field size="md">
             <InputText value="ABBA 10" />
-          </Cell>
-          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+          </Field>
+          <Field size="md">
             <InputText value="ABBA 11" />
-          </Cell>
-          <Cell size="1" sm="1/2" md="4/24" xl="2/24">
+          </Field>
+          <Field size="md">
             <InputText value="ABBA 12" />
-          </Cell>
+          </Field>
         </Grid>
 
         </div>

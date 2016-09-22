@@ -1,3 +1,6 @@
+import React from 'react';
+import { Cell } from 'react-pure'; //change to use "di"
+
 const sizes = {
   xs: {
     size: '1/2',
@@ -38,7 +41,14 @@ const LayoutField = props => {
   }
 
   const sizeProps = sizes[size];
-  <Cell {...rest} {...sizeProps}/>;
+  return <Cell {...rest} {...sizeProps}/>;
 }
 
 export default LayoutField;
+/*
+<LayoutField size='md'>
+  <input type='text'/>
+</LayoutField>
+
+<Field size='sm' value='aloha' type={{asdadasd}} />
+*/
