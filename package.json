@@ -1,0 +1,45 @@
+{
+  "name": "formr",
+  "version": "0.1.0",
+  "description": "Test bench for forms",
+  "scripts": {
+    "test": "mocha test --recursive --compilers js:babel-core/register --timeout 10000",
+    "test.watch": "mocha test --color --watch --recursive --compilers js:babel-core/register --timeout 10000",
+    "start": "node server.js",
+    "lint": "eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/surikaterna/formr.git"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "form"
+  ],
+  "author": "Surikat",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.0.20",
+    "babel-eslint": "^4.1.3",
+    "babel-loader": "^6.0.1",
+    "babel-preset-es2015": "^6.0.15",
+    "babel-preset-react": "^6.0.15",
+    "babel-preset-stage-0": "^6.0.15",
+    "eslint": "^2.2.0",
+    "eslint-config-surikat": "^1.1.1",
+    "eslint-plugin-react": "^4.2.0",
+    "mocha": "^2.5.3",
+    "react-hot-loader": "^1.3.0",
+    "should": "^9.0.2",
+    "webpack": "^1.12.2",
+    "webpack-dev-server": "^1.12.1"
+  },
+  "dependencies": {
+    "material-ui": "^0.15.4",
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0",
+    "react-pure": "^0.3.1",
+    "react-tap-event-plugin": "^1.0.0"
+  }
+}

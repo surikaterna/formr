@@ -1,0 +1,10 @@
+{
+  "extends": "surikat/es6",
+  "env": {
+    "node": true,
+    "mocha": true
+  },
+  "plugins": [
+    "react"
+  ]
+}
