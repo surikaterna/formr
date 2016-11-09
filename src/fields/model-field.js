@@ -33,7 +33,7 @@ export default class ModelField extends Component {
 
   _getWidgetFromType(type) {
     const fieldType = _componentConverter[type] || type;
-    return this.props.$componentFactory(fieldType);
+    return this.props.$formr.componentFactory(fieldType);
   }
 
   /**
@@ -56,7 +56,7 @@ export default class ModelField extends Component {
       }
     } else if (this._hasExpression()) {
       const path = this.props.value.getAsPath();
-      const type = new Schema(this.props.$schema).getType(path);
+      const type = new Schema(this.props.$formr.schema).getType(path);
       result = this._getWidgetFromType(type);
     } else {
       result = this._getWidgetFromType('string');
@@ -67,8 +67,8 @@ export default class ModelField extends Component {
     const props = {};
     if (this._hasExpression()) {
       const path = this.props.value.getAsPath();
-      const schema = new Schema(this.props.$schema).getSchema(path).asJson();
-      props.$schema = schema;
+      const schema = new Schema(this.props.$formr.schema).getSchema(path).asJson();
+      props.$formr = Object.assign({}, this.props.$formr, { schema });
     }
     return props;
   }
@@ -80,6 +80,6 @@ export default class ModelField extends Component {
       Widget = this._bind(Widget);
     }
     const props = this._getProps();
-    return <Widget {...this.props} {...props}/>;
+    return <Widget {...this.props} {...props} />;
   }
 }

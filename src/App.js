@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import TextField from 'material-ui/TextField';
 import ModelField from './fields/model-field';
 import Field from './fields/field';
 import SchemaObject from './fields/schema-object';
@@ -16,11 +16,13 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
+
+
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-if(!global.boot) {
+if (!global.boot) {
   injectTapEventPlugin();
-  global.boot=true;
+  global.boot = true;
 }
 
 const parser = new JsxParser();
@@ -114,10 +116,9 @@ const jsx = `
     <ModelField value={name}/>
     <ModelField value={age}/>
     <ModelField value={address}/>
-    <ModelField value={address.street}/>
   </div>`;
 
-const uiDef = parser.parse(jsx);
+// const uiDef = parser.parse(jsx);
 
 const data = {
   name: 'Andreas',
@@ -131,7 +132,7 @@ const data = {
 const schema = {
   type: 'object',
   properties: {
-    name: { type: 'string' },
+    name: { type: 'string', title: 'Name' },
     age: { type: 'number' },
     address: {
       type: 'object',
@@ -148,53 +149,72 @@ const schema = {
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = data;
+    this.state = { data, jsx, schema: JSON.stringify(schema, null, 4) };
   }
   render() {
+    const uiDef = parser.parse(this.state.jsx);
+    let schemaDef = {};
+    try{
+      schemaDef = JSON.parse(this.state.schema);
+    } catch(e) {
+      schemaDef = schema;
+    }
+
     return (
       <MuiThemeProvider>
         <div>
-        <Grid>
-          <Field size="md" path="asdasd">
-            <InputText value="ABBA 210" />
-          </Field>
-          <Field>
-            <InputText value="ABBA 2" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 3" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 4" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 5" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 6" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 7" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 8" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 9" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 10" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 11" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 12" />
-          </Field>
-        </Grid>
-
+          <Ui ui={uiDef} componentFactory={ComponentFactory} schema={schemaDef} value={this.state.data} onChange={(e) => { console.log(e); this.setState({ data: e }); } } />
+          <Grid>
+            <Field size="xl">
+              <TextField style={{ fontFamily: 'Courier New', fontSize: 11 }} multiLine={true} rows="5" value={this.state.jsx} fullWidth={true} floatingLabelText="jsx" onChange={(e) => this.setState({ jsx: e.target.value })} />
+            </Field>
+            <Field size="xl">
+              <TextField style={{ fontFamily: 'Courier New', fontSize: 11 }} multiLine={true} rows="5" value={this.state.schema} fullWidth={true} floatingLabelText="schema" onChange={(e) => this.setState({ schema: e.target.value })} />
+            </Field>
+          </Grid>
         </div>
       </MuiThemeProvider>
     );
   }
 }
+
+/*
+          <Grid>
+            <Field size="md">
+              <InputText value="ABBA 210" />
+            </Field>
+            <Field>
+              <InputText value="ABBA 2" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 3" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 4" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 5" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 6" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 7" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 8" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 9" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 10" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 11" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 12" />
+            </Field>
+          </Grid>
+          */

@@ -10,33 +10,38 @@ export default class ElementBuilder {
   constructor(componentFactory) {
     this._componentFactory = componentFactory || (() => null);
   }
-  build(node, defaultProps) {
+
+  build(node, defaultProps, formrProps) {
+    return this._build(node, Object.assign({}, defaultProps, { $formr: formrProps }));
+  }
+  _build(node, formrProps) {
     let type = node.type;
-    let options = {};
+    // let options;
     let isComponent = false;
     if (isUpperCase(type[0])) {
       isComponent = true;
       type = this._componentFactory(type);
       if (type && typeof type === 'object') {
-        options = type.options;
+        // options = type.options;
+
         // TODO: support type.factory as well for additional flexibility. (Needed for component)
         type = type.component;
       }
       if (!type) {
-        return <b>Unable to resolve <i>{node.type}</i></b>;
+        return <b style="color:red;">Unable to resolve <i>{node.type}</i></b>;
       }
     }
     let children;
     if (node.props && node.props.children) {
-      children = node.props.children.map(ch => this._child(ch, defaultProps));
+      children = node.props.children.map(ch => this._child(ch, formrProps));
     }
-    let props = Object.assign({}, defaultProps, node.props);
+    let props = Object.assign({}, formrProps, node.props);
     Object.keys(props).forEach((key) => {
       const prop = props[key];
       if (prop instanceof Expression) {
         // bind expression to parent value as context
         // todo do not use $root
-        props[key] = prop.withContext(props.$this);
+        props[key] = prop.withContext(props.$formr.this);
       }
     });
     // have to support multiple bindings with same path? :)
@@ -54,13 +59,13 @@ export default class ElementBuilder {
     return React.createElement(type, props, children);
   }
 
-  _child(child, defaultProps) {
+  _child(child, formrProps) {
     // different kind of children (expression, text)
     let result;
     if (typeof child === 'string' || child instanceof String) {
       result = child;
     } else {
-      result = this.build(child, defaultProps);
+      result = this._build(child, formrProps);
     }
     return result;
   }

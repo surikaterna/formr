@@ -4,7 +4,7 @@ import ModelField from './model-field';
 import LayoutField from './layout-field';
 
 export default function SchemaObject(props) {
-  const schema = new Schema(props.$schema);
+  const schema = new Schema(props.$formr.schema);
 
   if (!schema.isObject()) {
     throw new Error(`SchemaObject created for type: ${schema.getType()}`);
