@@ -18,9 +18,9 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-if(!global.boot) {
+if (!global.boot) {
   injectTapEventPlugin();
-  global.boot=true;
+  global.boot = true;
 }
 
 const parser = new JsxParser();
@@ -114,7 +114,6 @@ const jsx = `
     <ModelField value={name}/>
     <ModelField value={age}/>
     <ModelField value={address}/>
-    <ModelField value={address.street}/>
   </div>`;
 
 const uiDef = parser.parse(jsx);
@@ -131,7 +130,7 @@ const data = {
 const schema = {
   type: 'object',
   properties: {
-    name: { type: 'string' },
+    name: { type: 'string', title: 'Name' },
     age: { type: 'number' },
     address: {
       type: 'object',
@@ -154,47 +153,52 @@ export default class App extends Component {
     return (
       <MuiThemeProvider>
         <div>
-        <Grid>
-          <Field size="md" path="asdasd">
-            <InputText value="ABBA 210" />
-          </Field>
-          <Field>
-            <InputText value="ABBA 2" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 3" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 4" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 5" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 6" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 7" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 8" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 9" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 10" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 11" />
-          </Field>
-          <Field size="md">
-            <InputText value="ABBA 12" />
-          </Field>
-        </Grid>
+          <Ui ui={uiDef} componentFactory={ComponentFactory} schema={schema} value={data} onChange={(e) => { console.log(e); this.setState(e); } } />
+
 
         </div>
       </MuiThemeProvider>
     );
   }
 }
+
+/*
+          <Grid>
+            <Field size="md">
+              <InputText value="ABBA 210" />
+            </Field>
+            <Field>
+              <InputText value="ABBA 2" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 3" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 4" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 5" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 6" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 7" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 8" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 9" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 10" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 11" />
+            </Field>
+            <Field size="md">
+              <InputText value="ABBA 12" />
+            </Field>
+          </Grid>
+          */

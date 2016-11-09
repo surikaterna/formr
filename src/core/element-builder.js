@@ -12,18 +12,19 @@ export default class ElementBuilder {
   }
   build(node, defaultProps) {
     let type = node.type;
-    let options = {};
+    // let options;
     let isComponent = false;
     if (isUpperCase(type[0])) {
       isComponent = true;
       type = this._componentFactory(type);
       if (type && typeof type === 'object') {
-        options = type.options;
+        // options = type.options;
+
         // TODO: support type.factory as well for additional flexibility. (Needed for component)
         type = type.component;
       }
       if (!type) {
-        return <b>Unable to resolve <i>{node.type}</i></b>;
+        return <b style="color:red;">Unable to resolve <i>{node.type}</i></b>;
       }
     }
     let children;
