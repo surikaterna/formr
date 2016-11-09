@@ -36,6 +36,7 @@
     "webpack-dev-server": "^1.12.1"
   },
   "dependencies": {
+    "eslint-plugin-react": "^4.3.0",
     "material-ui": "^0.15.4",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",

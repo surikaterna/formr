@@ -56,7 +56,7 @@ export default class ModelField extends Component {
       }
     } else if (this._hasExpression()) {
       const path = this.props.value.getAsPath();
-      const type = new Schema(this.props.$formr.schema).getType(path);
+      const type = this.props.$formr.schema.getType(path);
       result = this._getWidgetFromType(type);
     } else {
       result = this._getWidgetFromType('string');
@@ -67,7 +67,7 @@ export default class ModelField extends Component {
     const props = {};
     if (this._hasExpression()) {
       const path = this.props.value.getAsPath();
-      const schema = new Schema(this.props.$formr.schema).getSchema(path).asJson();
+      const schema = this.props.$formr.schema.getSchema(path);
       props.$formr = Object.assign({}, this.props.$formr, { schema });
     }
     return props;
