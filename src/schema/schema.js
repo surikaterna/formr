@@ -24,14 +24,21 @@ export default class Schema {
   }
 
   getSchema(path) {
-    return new Schema(this._getCurrentSchema(path));
+    const pathedSchema = this._getCurrentSchema(path);
+    let result;
+    if (pathedSchema === this) {
+      result = this;
+    } else {
+      // root
+      result = new Schema(pathedSchema, this, path);
+    }
+    return result;
   }
 
   getProperties(path) {
     if (!this.isObject(path)) {
       throw new Error(`Properties only exist in object, this is ${this.getType(path)}`);
     }
-    const props = [];
     const schema = this._getCurrentSchema(path);
     return schema.properties;
   }
