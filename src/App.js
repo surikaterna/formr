@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import TextField from 'material-ui/TextField';
 import ModelField from './fields/model-field';
 import Field from './fields/field';
 import SchemaObject from './fields/schema-object';
@@ -15,6 +15,8 @@ import { Cell } from 'react-pure';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
+
+
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -116,7 +118,7 @@ const jsx = `
     <ModelField value={address}/>
   </div>`;
 
-const uiDef = parser.parse(jsx);
+// const uiDef = parser.parse(jsx);
 
 const data = {
   name: 'Andreas',
@@ -147,15 +149,29 @@ const schema = {
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = data;
+    this.state = { data, jsx, schema: JSON.stringify(schema, null, 4) };
   }
   render() {
+    const uiDef = parser.parse(this.state.jsx);
+    let schemaDef = {};
+    try{
+      schemaDef = JSON.parse(this.state.schema);
+    } catch(e) {
+      schemaDef = schema;
+    }
+
     return (
       <MuiThemeProvider>
         <div>
-          <Ui ui={uiDef} componentFactory={ComponentFactory} schema={schema} value={data} onChange={(e) => { console.log(e); this.setState(e); } } />
-
-
+          <Ui ui={uiDef} componentFactory={ComponentFactory} schema={schemaDef} value={this.state.data} onChange={(e) => { console.log(e); this.setState({ data: e }); } } />
+          <Grid>
+            <Field size="xl">
+              <TextField style={{ fontFamily: 'Courier New', fontSize: 11 }} multiLine={true} rows="5" value={this.state.jsx} fullWidth={true} floatingLabelText="jsx" onChange={(e) => this.setState({ jsx: e.target.value })} />
+            </Field>
+            <Field size="xl">
+              <TextField style={{ fontFamily: 'Courier New', fontSize: 11 }} multiLine={true} rows="5" value={this.state.schema} fullWidth={true} floatingLabelText="schema" onChange={(e) => this.setState({ schema: e.target.value })} />
+            </Field>
+          </Grid>
         </div>
       </MuiThemeProvider>
     );

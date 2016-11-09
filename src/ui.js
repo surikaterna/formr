@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import Expression, {Evaluator} from './expression';
+import Expression, { Evaluator } from './expression';
 import ElementBuilder from './core/element-builder';
 
 const wrapChildren = (children, props) =>
   React.Children.map(children, (child) => React.cloneElement(child, props));
 
-const Grid = (props) => <div class="grid">{ wrapChildren(props.children, props) }</div>;
+const Grid = (props) => <div class="grid">{wrapChildren(props.children, props)}</div>;
 
 class PropertyExpander {
   static expand(props, context, evaluator) {
@@ -49,7 +49,7 @@ export default class DeclaredUi extends Component {
           return <Field key={i++} onChange={e=>console.log(e)} {...componentProps } componentFactory={componentFactory}/>;
         });
     */
-    const result = builder.build(ui, { onChange, $componentFactory: componentFactory, $schema: schema, $root: this.props.value, $this: this.props.value });
+    const result = builder.build(ui, { onChange }, { componentFactory, schema, root: this.props.value, this: this.props.value });
     return <div className="ui">{result}</div>
   }
 }
