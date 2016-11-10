@@ -7,8 +7,11 @@ function _notImplemented() {
  * Support us in the nine circles of hell which is json-schema
  */
 export default class Schema {
-  constructor(jsonSchema) {
+  constructor(jsonSchema, parent, path) {
     this._schema = jsonSchema;
+    this._root = parent ? parent._root : this;
+    this._parent = parent;
+    this._pathFromParent = path;
   }
 
   _getCurrentSchema(path) {
@@ -21,6 +24,10 @@ export default class Schema {
 
   getType(path) {
     return this._getCurrentSchema(path).type;
+  }
+
+  getRoot() {
+    return this._root;
   }
 
   getSchema(path) {
