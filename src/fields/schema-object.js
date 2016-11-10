@@ -13,7 +13,7 @@ export default function SchemaObject(props) {
   const schemaProps = schema.getProperties();
   const fields = Object.keys(schemaProps).map(p =>
     <ModelField {...props} value={props.value[p]} type={schema.getType(p)} $schema={schema.getSchema(p).asJson()}
-      onChange={(e) => props.onChange(Object.assign({}, props.value, { [p]: e })) } />
+      onChange={(e) => props.onChange(Object.assign({}, props.value, { [p]: e }))} />
   );
 
   return <div>{fields}</div>;

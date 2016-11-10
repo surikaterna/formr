@@ -29,7 +29,7 @@ export default class Schema {
   getParent() {
     return this._parent;
   }
-  
+
   getPathFromParent() {
     return this._pathFromParent;
   }
