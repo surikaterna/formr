@@ -26,6 +26,14 @@ export default class Schema {
     return this._getCurrentSchema(path).type;
   }
 
+  getParent() {
+    return this._parent;
+  }
+  
+  getPathFromParent() {
+    return this._pathFromParent;
+  }
+
   getRoot() {
     return this._root;
   }
@@ -36,7 +44,6 @@ export default class Schema {
     if (pathedSchema === this) {
       result = this;
     } else {
-      // root
       result = new Schema(pathedSchema, this, path);
     }
     return result;
