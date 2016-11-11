@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import bindField from './bound-field';
 import Expression from '../expression/expression';
-import Schema from '../schema';
 
 const _componentConverter = {
   string: 'InputText',
