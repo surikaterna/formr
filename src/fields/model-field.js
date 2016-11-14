@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import bindField from './bound-field';
+import stateField from './state-field';
 import Expression from '../expression/expression';
 
 const _componentConverter = {
@@ -20,7 +21,7 @@ export default class ModelField extends Component {
   _bind(component) {
     let result = _boundComponents.get(component);
     if (!result) {
-      result = bindField(component);
+      result = bindField(stateField(component));
       _boundComponents.set(component, result);
     }
     return result;

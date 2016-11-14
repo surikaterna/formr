@@ -137,7 +137,7 @@ const schema = {
     address: {
       type: 'object',
       properties: {
-        street: { type: 'string' },
+        street: { type: 'string', format: 'email' },
         streetNumber: { type: 'number' },
         street2: { type: 'string' },
         street3: { type: 'string' }
