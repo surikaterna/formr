@@ -57,6 +57,9 @@ export default class ModelField extends Component {
       const path = this.props.value.getAsPath();
       const type = this.props.$formr.schema.getType(path);
       result = this._getWidgetFromType(type);
+    } else if (this.props.$formr && this.props.$formr.schema) {
+      const type = this.props.$formr.schema.getType();
+      result = this._getWidgetFromType(type);
     } else {
       result = this._getWidgetFromType('string');
     }
@@ -79,6 +82,6 @@ export default class ModelField extends Component {
       Widget = this._bind(Widget);
     }
     const props = this._getProps();
-    return <Widget {...this.props} {...props} />;
+    return <Widget {...this.props} {...props} onChange={(e) => { console.log(e, props, this.props); this.props.onChange(e) } } />;
   }
 }

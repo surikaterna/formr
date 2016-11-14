@@ -132,7 +132,7 @@ const data = {
 const schema = {
   type: 'object',
   properties: {
-    name: { type: 'string', title: 'Name' },
+    name: { type: 'string', title: 'Name', format: 'email' },
     age: { type: 'number' },
     address: {
       type: 'object',
@@ -166,10 +166,10 @@ export default class App extends Component {
           <Ui ui={uiDef} componentFactory={ComponentFactory} schema={schemaDef} value={this.state.data} onChange={(e) => { console.log(e); this.setState({ data: e }); } } />
           <Grid>
             <Field size="xl">
-              <TextField style={{ fontFamily: 'Courier New', fontSize: 11 }} multiLine={true} rows="5" value={this.state.jsx} fullWidth={true} floatingLabelText="jsx" onChange={(e) => this.setState({ jsx: e.target.value })} />
+              <TextField style={{ fontFamily: 'Courier New', fontSize: 11 }} multiLine={true} rows={5} value={this.state.jsx} fullWidth={true} floatingLabelText="jsx" onChange={(e) => this.setState({ jsx: e.target.value })} />
             </Field>
             <Field size="xl">
-              <TextField style={{ fontFamily: 'Courier New', fontSize: 11 }} multiLine={true} rows="5" value={this.state.schema} fullWidth={true} floatingLabelText="schema" onChange={(e) => this.setState({ schema: e.target.value })} />
+              <TextField style={{ fontFamily: 'Courier New', fontSize: 11 }} multiLine={true} rows={5} value={this.state.schema} fullWidth={true} floatingLabelText="schema" onChange={(e) => this.setState({ schema: e.target.value })} />
             </Field>
           </Grid>
         </div>
