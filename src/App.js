@@ -15,7 +15,7 @@ import { Cell } from 'react-pure';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
-
+import Schema from './schema';
 
 
 // Needed for onTouchTap
@@ -137,7 +137,7 @@ const schema = {
     address: {
       type: 'object',
       properties: {
-        street: { type: 'string' },
+        street: { type: 'string', format: 'email' },
         streetNumber: { type: 'number' },
         street2: { type: 'string' },
         street3: { type: 'string' }
@@ -145,6 +145,11 @@ const schema = {
     }
   }
 };
+
+const Json = (props) =>
+   <div><pre>{JSON.stringify(props.value, null, 2)}</pre></div>;
+
+
 
 export default class App extends Component {
   constructor(props) {
@@ -154,9 +159,9 @@ export default class App extends Component {
   render() {
     const uiDef = parser.parse(this.state.jsx);
     let schemaDef = {};
-    try{
+    try {
       schemaDef = JSON.parse(this.state.schema);
-    } catch(e) {
+    } catch (e) {
       schemaDef = schema;
     }
 
@@ -165,6 +170,9 @@ export default class App extends Component {
         <div>
           <Ui ui={uiDef} componentFactory={ComponentFactory} schema={schemaDef} value={this.state.data} onChange={(e) => { console.log(e); this.setState({ data: e }); } } />
           <Grid>
+            <Field size="xl">
+              <Json value={this.state.data} />
+            </Field>
             <Field size="xl">
               <TextField style={{ fontFamily: 'Courier New', fontSize: 11 }} multiLine={true} rows={5} value={this.state.jsx} fullWidth={true} floatingLabelText="jsx" onChange={(e) => this.setState({ jsx: e.target.value })} />
             </Field>

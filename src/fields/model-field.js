@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import bindField from './bound-field';
+import stateField from './state-field';
 import Expression from '../expression/expression';
 
 const _componentConverter = {
@@ -9,21 +10,18 @@ const _componentConverter = {
   array: 'SchemaArray'
 };
 
-// Cache previously bound components
-const _boundComponents = new Map();
-
 /**
  * ModelField
  */
 export default class ModelField extends Component {
 
-  _bind(component) {
-    let result = _boundComponents.get(component);
-    if (!result) {
-      result = bindField(component);
-      _boundComponents.set(component, result);
+  constructor(props) {
+    super(props);
+    let Widget = stateField(this._getWidget());
+    if (this._hasExpression()) {
+      Widget = bindField(Widget);
     }
-    return result;
+    this.state = { Widget };
   }
 
   _hasExpression() {
@@ -70,17 +68,14 @@ export default class ModelField extends Component {
     if (this._hasExpression()) {
       const path = this.props.value.getAsPath();
       const schema = this.props.$formr.schema.getSchema(path);
+      props.title = schema.getTitle();
       props.$formr = Object.assign({}, this.props.$formr, { schema });
     }
     return props;
   }
 
   render() {
-    let Widget = this._getWidget();
-
-    if (this._hasExpression()) {
-      Widget = this._bind(Widget);
-    }
+    const { Widget } = this.state;
     const props = this._getProps();
     return <Widget {...this.props} {...props} onChange={(e) => { console.log(e, props, this.props); this.props.onChange(e) } } />;
   }
