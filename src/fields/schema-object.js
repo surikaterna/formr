@@ -9,10 +9,11 @@ export default function SchemaObject(props) {
   if (!schema.isObject()) {
     throw new Error(`SchemaObject created for type: ${schema.getType()}`);
   }
-
+  const {errorText, ...rest} = props;
+  console.log(errorText, rest);
   const schemaProps = schema.getProperties();
   const fields = Object.keys(schemaProps).map(p =>
-    <ModelField {...props} value={props.value[p]} $formr={Object.assign({}, props.$formr, { schema: schema.getSchema(p) })}
+    <ModelField {...rest} key={p} title={schema.getSchema(p).getTitle()} value={props.value[p]} $formr={Object.assign({}, props.$formr, { schema: schema.getSchema(p) })}
       onChange={(e) => props.onChange(Object.assign({}, props.value, { [p]: e }))} />
   );
 
