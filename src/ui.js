@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Expression, { Evaluator } from './expression';
 import ElementBuilder from './core/element-builder';
-
+import Schema from './schema';
 const wrapChildren = (children, props) =>
   React.Children.map(children, (child) => React.cloneElement(child, props));
 
@@ -49,7 +49,7 @@ export default class DeclaredUi extends Component {
           return <Field key={i++} onChange={e=>console.log(e)} {...componentProps } componentFactory={componentFactory}/>;
         });
     */
-    const result = builder.build(ui, { onChange }, { componentFactory, schema, root: this.props.value, this: this.props.value });
+    const result = builder.build(ui, { onChange }, { componentFactory, schema: new Schema(schema), root: this.props.value, this: this.props.value });
     return <div className="ui">{result}</div>
   }
 }

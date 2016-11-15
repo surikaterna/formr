@@ -77,12 +77,26 @@ TBD
 - [ ] Support in template defined Components
 
 ## JSON schema
+### Types
 - [ ] type object
 - [ ] type string
 - [ ] type number
+- [ ] enum
 - [ ] allOf
 - [ ] oneOf
 - [ ] anyOf
 - [ ] not
 - [ ] $ref
 - [ ] $data
+
+### Formats
+- [x] format e-mail
+- [ ] format regexp
+
+### Other
+- [ ] required
+- [ ] minItems
+- [ ] maxItems
+- [ ] minProperties
+- [ ] maxProperties
+

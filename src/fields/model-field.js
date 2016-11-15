@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import bindField from './bound-field';
+import stateField from './state-field';
 import Expression from '../expression/expression';
-import Schema from '../schema';
 
 const _componentConverter = {
   string: 'InputText',
@@ -10,21 +10,18 @@ const _componentConverter = {
   array: 'SchemaArray'
 };
 
-// Cache previously bound components
-const _boundComponents = new Map();
-
 /**
  * ModelField
  */
 export default class ModelField extends Component {
 
-  _bind(component) {
-    let result = _boundComponents.get(component);
-    if (!result) {
-      result = bindField(component);
-      _boundComponents.set(component, result);
+  constructor(props) {
+    super(props);
+    let Widget = stateField(this._getWidget());
+    if (this._hasExpression()) {
+      Widget = bindField(Widget);
     }
-    return result;
+    this.state = { Widget };
   }
 
   _hasExpression() {
@@ -56,7 +53,10 @@ export default class ModelField extends Component {
       }
     } else if (this._hasExpression()) {
       const path = this.props.value.getAsPath();
-      const type = new Schema(this.props.$formr.schema).getType(path);
+      const type = this.props.$formr.schema.getType(path);
+      result = this._getWidgetFromType(type);
+    } else if (this.props.$formr && this.props.$formr.schema) {
+      const type = this.props.$formr.schema.getType();
       result = this._getWidgetFromType(type);
     } else {
       result = this._getWidgetFromType('string');
@@ -67,19 +67,16 @@ export default class ModelField extends Component {
     const props = {};
     if (this._hasExpression()) {
       const path = this.props.value.getAsPath();
-      const schema = new Schema(this.props.$formr.schema).getSchema(path).asJson();
+      const schema = this.props.$formr.schema.getSchema(path);
+      props.title = schema.getTitle();
       props.$formr = Object.assign({}, this.props.$formr, { schema });
     }
     return props;
   }
 
   render() {
-    let Widget = this._getWidget();
-
-    if (this._hasExpression()) {
-      Widget = this._bind(Widget);
-    }
+    const { Widget } = this.state;
     const props = this._getProps();
-    return <Widget {...this.props} {...props} />;
+    return <Widget {...this.props} {...props} onChange={(e) => { console.log(e, props, this.props); this.props.onChange(e) } } />;
   }
 }

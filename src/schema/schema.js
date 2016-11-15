@@ -7,8 +7,11 @@ function _notImplemented() {
  * Support us in the nine circles of hell which is json-schema
  */
 export default class Schema {
-  constructor(jsonSchema) {
+  constructor(jsonSchema, parent, path) {
     this._schema = jsonSchema;
+    this._root = parent ? parent._root : this;
+    this._parent = parent;
+    this._pathFromParent = path;
   }
 
   _getCurrentSchema(path) {
@@ -23,15 +26,37 @@ export default class Schema {
     return this._getCurrentSchema(path).type;
   }
 
+  getParent() {
+    return this._parent;
+  }
+
+  getPathFromParent() {
+    return this._pathFromParent;
+  }
+
+  getRoot() {
+    return this._root;
+  }
+
+  getTitle() {
+    return this._schema.title || this._pathFromParent || 'unknown';
+  }
+
   getSchema(path) {
-    return new Schema(this._getCurrentSchema(path));
+    const pathedSchema = this._getCurrentSchema(path);
+    let result;
+    if (pathedSchema === this) {
+      result = this;
+    } else {
+      result = new Schema(pathedSchema, this, path);
+    }
+    return result;
   }
 
   getProperties(path) {
     if (!this.isObject(path)) {
       throw new Error(`Properties only exist in object, this is ${this.getType(path)}`);
     }
-    const props = [];
     const schema = this._getCurrentSchema(path);
     return schema.properties;
   }

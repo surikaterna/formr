@@ -7,5 +7,9 @@ export default function BaseInput(props) {
     $formr,
     ...other
   } = props;
-  return <TextField {...other} fullWidth={true} value={value} onChange={(e) => onChange(e.target.value) } floatingLabelText={props.title} errorText={props.errorText}/>
+  return <TextField {...other} fullWidth={true} value={value || ''}
+    onChange={(e) => onChange(e.target.value)}
+    floatingLabelText={props.title}
+    errorText={props.errorText}
+  />
 };
