@@ -90,9 +90,13 @@ TBD
 - [ ] $data
 
 ### Formats
-- [ ] format e-mail
+- [x] format e-mail
 - [ ] format regexp
 
 ### Other
 - [ ] required
+- [ ] minItems
+- [ ] maxItems
+- [ ] minProperties
+- [ ] maxProperties
 
