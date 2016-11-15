@@ -6,6 +6,7 @@ import React from 'react';
  * disabled
  * errorText
  * title
+ * description
  * type
  */
 export default function BaseInput(props) {

@@ -42,6 +42,10 @@ export default class Schema {
     return this._schema.title || this._pathFromParent || 'unknown';
   }
 
+  getDescription() {
+    return this._schema.description || this.getTitle();
+  }
+
   getSchema(path) {
     const pathedSchema = this._getCurrentSchema(path);
     let result;

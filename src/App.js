@@ -138,16 +138,25 @@ const schema = {
       type: 'object',
       properties: {
         street: { type: 'string', format: 'email' },
-        streetNumber: { type: 'number' },
-        street2: { type: 'string' },
-        street3: { type: 'string' }
+        streetNumber: { type: 'number', minimum: 1, exclusiveMinimum: true },
+        street2: {
+          type: 'string', pattern: '^[^/]*$',
+          minLength: 2
+        },
+        street3: { type: 'string' },
+        color: {
+          type: 'string',
+          enum: ['red', 'amber', 'green'],
+          title: 'Färgen',
+          description: 'Ange en färg som du gillar'
+        }
       }
     }
   }
 };
 
 const Json = (props) =>
-   <div><pre>{JSON.stringify(props.value, null, 2)}</pre></div>;
+  <div><pre>{JSON.stringify(props.value, null, 2)}</pre></div>;
 
 
 
@@ -168,7 +177,8 @@ export default class App extends Component {
     return (
       <MuiThemeProvider>
         <div>
-          <Ui ui={uiDef} componentFactory={ComponentFactory} schema={schemaDef} value={this.state.data} onChange={(e) => { console.log(e); this.setState({ data: e }); } } />
+          A{this.state.nr}B
+          <Ui ui={uiDef} componentFactory={ComponentFactory} schema={schemaDef} value={this.state.data} onChange={(e) => { this.setState({ data: e }); } } />
           <Grid>
             <Field size="xl">
               <Json value={this.state.data} />

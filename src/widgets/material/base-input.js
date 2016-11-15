@@ -5,11 +5,13 @@ export default function BaseInput(props) {
 
   const {value, onChange,
     $formr,
-    ...other
+    description,
+    ...other,
   } = props;
-  return <TextField {...other} fullWidth={true} value={value || ''}
-    onChange={(e) => onChange(e.target.value)}
-    floatingLabelText={props.title}
-    errorText={props.errorText}
+return <TextField {...other} fullWidth={true} value={value || ''}
+  onChange={(e) => onChange(e.target.value)}
+  floatingLabelText={props.title}
+  hintText={description || props.title}
+  errorText={props.errorText}
   />
 };

@@ -69,6 +69,7 @@ export default class ModelField extends Component {
       const path = this.props.value.getAsPath();
       const schema = this.props.$formr.schema.getSchema(path);
       props.title = schema.getTitle();
+      props.description = schema.getDescription();
       props.$formr = Object.assign({}, this.props.$formr, { schema });
     }
     return props;
@@ -77,6 +78,6 @@ export default class ModelField extends Component {
   render() {
     const { Widget } = this.state;
     const props = this._getProps();
-    return <Widget {...this.props} {...props} onChange={(e) => { console.log(e, props, this.props); this.props.onChange(e) } } />;
+    return <Widget {...this.props} {...props} onChange={(e) => { this.props.onChange(e) } } />;
   }
 }
