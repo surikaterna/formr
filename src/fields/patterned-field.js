@@ -43,9 +43,10 @@ PatternService.addProvider((schema, props) => (props.type && typeof (props.type)
    *
    * USER DEFINED PROVIDERS ??
    * <Component id='Aloha' matches={$ref:'#/definitions/orders/test'}>
-   *  <div>Hello World!</div> 
+   *  <div>Hello World!</div>
    * </Component>
    * <Aloha value={'adsasdsd'} />
+   *
    * else if no props.type but props.value is an expression,
    * take path from expression and resolve the corresponding type from schema
    * else use type = string
