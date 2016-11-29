@@ -16,10 +16,14 @@ class PatternService {
   }
 }
 
+export const service = new PatternService();
+
+
+
 
 
 // if props.type = 'function' use it as widget
-PatternService.addProvider((schema, props) => (props.type && typeof (props.type) === 'function') ? props.type : undefined);
+service.addProvider((schema, props) => (props.type && typeof (props.type) === 'function') ? props.type : undefined);
 
 const _componentConverter = {
   string: 'InputText',
@@ -34,7 +38,7 @@ const _getWidgetFromType = (type) => {
 };
 
 // if props.type = 'json-schema-type' resolve to correct component type
-PatternService.addProvider((schema, props) => (props.type && typeof (props.type) === 'string') ? _getWidgetFromType(props.type) : undefined);
+service.addProvider((schema, props) => (props.type && typeof (props.type) === 'string') ? _getWidgetFromType(props.type) : undefined);
 
   /**
    * if props.type = 'function' use it as widget
