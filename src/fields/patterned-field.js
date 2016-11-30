@@ -16,10 +16,14 @@ class PatternService {
   }
 }
 
+export const service = new PatternService();
+
+
+
 
 
 // if props.type = 'function' use it as widget
-PatternService.addProvider((schema, props) => (props.type && typeof (props.type) === 'function') ? props.type : undefined);
+service.addProvider((schema, props) => (props.type && typeof (props.type) === 'function') ? props.type : undefined);
 
 const _componentConverter = {
   string: 'InputText',
@@ -34,7 +38,7 @@ const _getWidgetFromType = (type) => {
 };
 
 // if props.type = 'json-schema-type' resolve to correct component type
-PatternService.addProvider((schema, props) => (props.type && typeof (props.type) === 'string') ? _getWidgetFromType(props.type) : undefined);
+service.addProvider((schema, props) => (props.type && typeof (props.type) === 'string') ? _getWidgetFromType(props.type) : undefined);
 
   /**
    * if props.type = 'function' use it as widget
@@ -43,9 +47,10 @@ PatternService.addProvider((schema, props) => (props.type && typeof (props.type)
    *
    * USER DEFINED PROVIDERS ??
    * <Component id='Aloha' matches={$ref:'#/definitions/orders/test'}>
-   *  <div>Hello World!</div> 
+   *  <div>Hello World!</div>
    * </Component>
    * <Aloha value={'adsasdsd'} />
+   *
    * else if no props.type but props.value is an expression,
    * take path from expression and resolve the corresponding type from schema
    * else use type = string
