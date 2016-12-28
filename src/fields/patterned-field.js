@@ -3,7 +3,7 @@ class PatternService {
     this._providers = [];
   }
   addProvider(provider) {
-    this._push(provider);
+    this._providers.push(provider);
   }
   getWidget(schema, fieldProps) {
     for (let i = 0; i < this._providers.length; i++) {
@@ -23,7 +23,7 @@ export const service = new PatternService();
 
 
 // if props.type = 'function' use it as widget
-service.addProvider((schema, props) => (props.type && typeof (props.type) === 'function') ? props.type : undefined);
+service.addProvider((schema, props) => ((props.type && typeof (props.type) === 'function') ? props.type : undefined));
 
 const _componentConverter = {
   string: 'InputText',
@@ -32,13 +32,15 @@ const _componentConverter = {
   array: 'SchemaArray'
 };
 
-const _getWidgetFromType = (type) => {
+const _getWidgetFromType = (type, $formr) => {
   const fieldType = _componentConverter[type] || type;
-  return this.props.$formr.componentFactory(fieldType);
+  return $formr.componentFactory(fieldType);
 };
 
-// if props.type = 'json-schema-type' resolve to correct component type
-service.addProvider((schema, props) => (props.type && typeof (props.type) === 'string') ? _getWidgetFromType(props.type) : undefined);
+// if props.type = 'function' use it as widget
+service.addProvider((schema, props) => ((props.type && typeof (props.type) === 'function') ? props.type : undefined));
+// if props.type IN json-schema-type resolve to correct component type
+service.addProvider((schema, props) => ((props.type && typeof (props.type) === 'string') ? _getWidgetFromType(props.type, props.$formr) : undefined));
 
   /**
    * if props.type = 'function' use it as widget
